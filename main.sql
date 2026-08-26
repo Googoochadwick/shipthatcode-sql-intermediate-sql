@@ -11,4 +11,4 @@ INSERT INTO employees VALUES
 -- The average itself is not something WHERE can compute for you; it has to
 -- be worked out by a query of its own before the comparison can happen.
 
-SELECT name FROM employees;   -- replace: this prints all five
+SELECT name FROM employees where salary > (select avg(salary) from employees);   -- replace: this prints all five
