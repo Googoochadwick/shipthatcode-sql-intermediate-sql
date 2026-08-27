@@ -1,23 +1,30 @@
-CREATE TABLE products (category TEXT, price INTEGER);
-INSERT INTO products VALUES
-    ('food', 10),
-    ('tech', 500),
-    ('food', 25),
-    ('tech', 1500),
-    ('book', 30),
-    ('book', 20);
+CREATE TABLE emps (name TEXT, department TEXT, salary INTEGER);
+INSERT INTO emps VALUES
+    ('Alice', 'eng', 100000),
+    ('Bob', 'eng', 80000),
+    ('Carol', 'eng', 120000),
+    ('Dan', 'eng', 90000),
+    ('Eve', 'sales', 70000),
+    ('Frank', 'sales', 60000),
+    ('Grace', 'sales', 80000);
 
--- TODO: define a CTE that totals price per category, then have the main
--- query keep only the categories whose total is over 100 and print them as
--- <category>|<total>, sorted alphabetically by category.
+-- TODO: rank employees within their own department by salary (highest = 1),
+-- keep the top 3 of each department, and print <name>|<department>|<salary>
+-- ordered by department, then salary descending.
 --
---   WITH <name> AS ( <the SELECT that aggregates> )
---   <the SELECT that filters and orders>
-with total as(
-    select category, SUM(price) as total 
-    from products 
-    group by category
+-- Remember: a window function cannot appear in WHERE. Compute the rank in a
+-- CTE, give it an alias, and filter on that alias in the outer query.
+
+with rng as (
+    select
+    name,
+    department,
+    salary,
+    ROW_NUMBER() OVER (PARTITION BY Department ORDER BY salary) as rank
+    from emps
 )
 
+SELECT name || '|' || department || '|' || salary FROM rng
+where rank <= 3
+order by department asc, salary desc;
 
-SELECT category || '|' || total FROM total where total > 100;   -- replace: not grouped, not filtered
