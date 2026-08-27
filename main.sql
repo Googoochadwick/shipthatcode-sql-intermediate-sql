@@ -1,30 +1,17 @@
-CREATE TABLE emps (name TEXT, department TEXT, salary INTEGER);
-INSERT INTO emps VALUES
-    ('Alice', 'eng', 100000),
-    ('Bob', 'eng', 80000),
-    ('Carol', 'eng', 120000),
-    ('Dan', 'eng', 90000),
-    ('Eve', 'sales', 70000),
-    ('Frank', 'sales', 60000),
-    ('Grace', 'sales', 80000);
+CREATE TABLE customers (id INTEGER, name TEXT);
+INSERT INTO customers VALUES (1, 'Alice'), (2, 'Bob'), (3, 'Carol'), (4, 'Dan');
 
--- TODO: rank employees within their own department by salary (highest = 1),
--- keep the top 3 of each department, and print <name>|<department>|<salary>
--- ordered by department, then salary descending.
+CREATE TABLE orders (customer_id INTEGER, item TEXT);
+INSERT INTO orders VALUES (1, 'book'), (3, 'phone'), (1, 'pen');
+
+-- TODO: print the names of customers who have never placed an order,
+-- sorted alphabetically, using a set operator (not NOT IN, not a LEFT JOIN).
 --
--- Remember: a window function cannot appear in WHERE. Compute the rank in a
--- CTE, give it an alias, and filter on that alias in the outer query.
+-- Both SELECTs must produce the same single column, and the one ORDER BY
+-- goes at the very end -- it sorts the combined result.
+with ids as(
+SELECT id FROM customers
+except
+select customer_id from orders)   -- replace: this keeps everyone
 
-with rng as (
-    select
-    name,
-    department,
-    salary,
-    ROW_NUMBER() OVER (PARTITION BY Department ORDER BY salary desc) as rank
-    from emps
-)
-
-SELECT name || '|' || department || '|' || salary FROM rng
-where rank <= 3
-order by department asc, salary desc;
-
+select name from customers where id in (select id from ids);
