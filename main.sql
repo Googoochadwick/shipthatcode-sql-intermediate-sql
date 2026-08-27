@@ -20,7 +20,7 @@ with rng as (
     name,
     department,
     salary,
-    ROW_NUMBER() OVER (PARTITION BY Department ORDER BY salary) as rank
+    ROW_NUMBER() OVER (PARTITION BY Department ORDER BY salary desc) as rank
     from emps
 )
 
