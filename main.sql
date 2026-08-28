@@ -1,20 +1,17 @@
-CREATE TABLE events (id INTEGER, type TEXT);
-INSERT INTO events VALUES
-    (1, 'login'),
-    (2, 'purchase'),
-    (3, 'login'),
-    (4, 'login'),
-    (5, 'purchase');
+CREATE TABLE customers (id INTEGER, name TEXT, email TEXT);
+INSERT INTO customers VALUES
+    (1, 'Ada', 'ada@x.io'),
+    (2, 'Bob', 'bob@x.io'),
+    (3, 'Carol', 'carol@x.io');
 
--- TODO: one row, three counts, printed as <total>|<logins>|<purchases>.
+-- TODO: two statements.
+-- 1. Create an index named idx_customers_email on the email column of
+--    customers.
+-- 2. Then write the lookup itself: select the name of the customer whose
+--    email is 'ada@x.io'. Only that name should be printed.
 --
--- A conditional aggregate is a normal aggregate over an expression that
--- yields something to count for the rows you want and nothing for the rest.
--- Note: this grader runs SQLite 3.27, which has no FILTER clause -- use the
--- portable CASE WHEN form.
-
-SELECT 
-COUNT(*) || '|' ||
-SUM(CASE WHEN type = "login" THEN 1 ELSE 0 END) || '|' ||
-SUM(CASE WHEN type = "purchase" THEN 1 ELSE 0 END) 
-FROM events;   -- replace: this is only the first of the three numbers
+-- The output cannot show you whether the index was used -- that is what
+-- EXPLAIN QUERY PLAN is for. Run it yourself if you want to see the plan,
+-- but do not leave it in your final answer; it prints extra rows.
+create index idx_customers_email on customers(email;)
+select name from customers where id = 'ada@x.io';
