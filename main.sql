@@ -14,4 +14,4 @@ INSERT INTO customers VALUES
 -- EXPLAIN QUERY PLAN is for. Run it yourself if you want to see the plan,
 -- but do not leave it in your final answer; it prints extra rows.
 create index idx_customers_email on customers(email);
-select name from customers where id = 'ada@x.io';
+select name from customers where email = 'ada@x.io';
