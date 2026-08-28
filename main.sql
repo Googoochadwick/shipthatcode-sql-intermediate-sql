@@ -14,7 +14,7 @@ INSERT INTO events VALUES
 -- portable CASE WHEN form.
 
 SELECT 
-COUNT(*),
-SUM(CASE WHEN type = "login" THEN 1 ELSE 0 END), 
-SUM(CASE WHEN type = "purchase" THEN 1 ELSE 0 END), 
+COUNT(*) || '|' ||
+SUM(CASE WHEN type = "login" THEN 1 ELSE 0 END) || '|' ||
+SUM(CASE WHEN type = "purchase" THEN 1 ELSE 0 END) 
 FROM events;   -- replace: this is only the first of the three numbers
