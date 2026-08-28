@@ -13,5 +13,5 @@ INSERT INTO customers VALUES
 -- The output cannot show you whether the index was used -- that is what
 -- EXPLAIN QUERY PLAN is for. Run it yourself if you want to see the plan,
 -- but do not leave it in your final answer; it prints extra rows.
-create index idx_customers_email on customers(email;)
+create index idx_customers_email on customers(email);
 select name from customers where id = 'ada@x.io';
