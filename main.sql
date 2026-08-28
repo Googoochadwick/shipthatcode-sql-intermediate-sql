@@ -15,6 +15,6 @@ INSERT INTO events VALUES
 
 SELECT 
 COUNT(*),
-SUM(CASE WHEN <type = "login"> THEN 1 ELSE 0 END), 
-SUM(CASE WHEN <type = "purchases"> THEN 1 ELSE 0 END), 
+SUM(CASE WHEN type = "login" THEN 1 ELSE 0 END), 
+SUM(CASE WHEN type = "purchases" THEN 1 ELSE 0 END), 
 FROM events;   -- replace: this is only the first of the three numbers
