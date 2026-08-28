@@ -1,12 +1,20 @@
-CREATE TABLE accounts (id INTEGER PRIMARY KEY, balance INTEGER);
-INSERT INTO accounts VALUES (1, 500), (2, 600);
+CREATE TABLE events (id INTEGER, type TEXT);
+INSERT INTO events VALUES
+    (1, 'login'),
+    (2, 'purchase'),
+    (3, 'login'),
+    (4, 'login'),
+    (5, 'purchase');
 
--- TODO: inside a BEGIN ... COMMIT block, move 100 from account 1 to
--- account 2 -- subtract from 1, add to 2. Keep the SELECT below as the
--- last statement so the final balances are printed.
-begin;
-update accounts set balance = balance - 100 where id is 1;
-update accounts set balance = balance + 100 where id is 2;
-commit;
+-- TODO: one row, three counts, printed as <total>|<logins>|<purchases>.
+--
+-- A conditional aggregate is a normal aggregate over an expression that
+-- yields something to count for the rows you want and nothing for the rest.
+-- Note: this grader runs SQLite 3.27, which has no FILTER clause -- use the
+-- portable CASE WHEN form.
 
-SELECT id || '|' || balance FROM accounts ORDER BY id;
+SELECT 
+COUNT(*),
+SUM(CASE WHEN <type = "login"> THEN 1 ELSE 0 END), 
+SUM(CASE WHEN <type = "purchases"> THEN 1 ELSE 0 END), 
+FROM events;   -- replace: this is only the first of the three numbers
